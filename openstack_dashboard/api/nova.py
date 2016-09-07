@@ -156,7 +156,8 @@ class NovaUsage(base.APIResourceWrapper):
 
     _attrs = ['start', 'server_usages', 'stop', 'tenant_id',
               'total_local_gb_usage', 'total_memory_mb_usage',
-              'total_vcpus_usage', 'total_hours']
+              'total_vcpus_usage', 'total_hours', 'disk_bill',
+              'mem_bill', 'cpu_bill']
 
     def get_summary(self):
         return {'instances': self.total_active_instances,
@@ -165,7 +166,10 @@ class NovaUsage(base.APIResourceWrapper):
                 'vcpu_hours': self.vcpu_hours,
                 'local_gb': self.local_gb,
                 'disk_gb_hours': self.disk_gb_hours,
-                'memory_mb_hours': self.memory_mb_hours}
+                'memory_mb_hours': self.memory_mb_hours,
+                'disk_billing': self.disk_billing,
+                'mem_billing': self.mem_billing,
+                'cpu_billing': self.cpu_billing}
 
     @property
     def total_active_instances(self):
@@ -198,6 +202,17 @@ class NovaUsage(base.APIResourceWrapper):
     def memory_mb_hours(self):
         return getattr(self, "total_memory_mb_usage", 0)
 
+    @property
+    def disk_billing(self):
+        return getattr(self, "disk_bill", 0)
+
+    @property
+    def mem_billing(self):
+        return getattr(self, "mem_bill", 0)
+
+    @property
+    def cpu_billing(self):
+        return getattr(self, "cpu_bill", 0)
 
 class SecurityGroup(base.APIResourceWrapper):
     """Wrapper around novaclient.security_groups.SecurityGroup.

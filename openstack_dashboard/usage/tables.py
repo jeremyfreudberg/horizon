@@ -56,6 +56,18 @@ class GlobalUsageTable(BaseUsageTable):
                                  help_text=_("Total memory usage (MB * "
                                              "Hours Used) for the project"),
                                  filters=(lambda v: floatformat(v, 2),))
+    mem_bill = tables.Column('mem_billing',
+                                 verbose_name=_("Memory Bill"),
+                                 help_text=_("Bill"),
+                                 filters=(lambda v: "$"+floatformat(v, 2),))
+    cpu_bill = tables.Column('cpu_billing',
+                                 verbose_name=_("VCPU Bill"),
+                                 help_text=_("Bill"),
+                                 filters=(lambda v: "$"+floatformat(v, 2),))
+    disk_bill = tables.Column('disk_billing',
+                                 verbose_name=_("Disk Bill"),
+                                 help_text=_("Bill"),
+                                 filters=(lambda v: "$"+floatformat(v, 2),))
 
     def get_object_id(self, datum):
         return datum.tenant_id
@@ -65,7 +77,8 @@ class GlobalUsageTable(BaseUsageTable):
         hidden_title = False
         verbose_name = _("Usage")
         columns = ("project", "vcpus", "disk", "memory",
-                   "vcpu_hours", "disk_hours", "memory_hours")
+                   "vcpu_hours", "cpu_bill", "disk_hours", "disk_bill",
+                   "memory_hours", "mem_bill")
         table_actions = (CSVSummary,)
         multi_select = False
 
